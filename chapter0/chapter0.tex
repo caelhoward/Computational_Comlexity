@@ -1,0 +1,204 @@
+\documentclass[11pt]{exam}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\newcommand{\myname}{Cael Howard} %Write your name in here
+\newcommand{\myUCO}{} 
+\newcommand{\myhwtype}{}
+\newcommand{\myhwnum}{5} %Homework set number
+\newcommand{\myclass}{Computational Complexity}
+\newcommand{\mylecture}{}
+\newcommand{\mysection}{}
+\usepackage{tcolorbox}
+
+
+% Prefix for numedquestion's
+\newcommand{\questiontype}{Question}
+
+
+% Use this if your "written" questions are all under one section
+% For example, if the homework handout has Section 5: Written Questions
+% and all questions are 5.1, 5.2, 5.3, etc. set this to 5
+% Use for 0 no prefix. Redefine as needed per-question.
+\newcommand{\writtensection}{0}
+
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{accents}
+
+\usepackage{centernot}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\card}{\vert}{\vert}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+
+\newenvironment{namedquestion}[1][\arabic{questionCounter}]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.2in}%
+        \noindent{\bf #1}%
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{numedquestion}[0]{%
+	\stepcounter{questionCounter}%
+    \vspace{.2in}%
+        \ifx\writtensection\undefined
+        \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+        \else
+          \if\writtensection0
+          \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+          \else
+          \noindent{\bf \questiontype \; \writtensection.\arabic{questionCounter} }%
+        \fi
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{alphaparts}[0]{%
+  \begin{enumerate}[label=\textbf{(\alph*)}]
+}{\end{enumerate}}
+
+\newenvironment{arabicparts}[0]{%
+  \begin{enumerate}[label=\textbf{\arabic{questionCounter}.\arabic*})]
+}{\end{enumerate}}
+
+\newenvironment{questionpart}[0]{%
+  \item
+}{}
+
+\newcommand{\answerbox}[1]{
+\begin{framed}
+\vspace{#1}
+\end{framed}}
+
+\newtcolorbox{greybox}[1][]{
+  colback=gray!10!white, % Light grey background
+  colframe=black!50,    % Dark grey frame
+  fonttitle=\bfseries,
+  title=#1,
+  sharp corners,
+  rounded corners,
+  leftrule=1pt,
+  rightrule=1pt
+}
+
+\pagestyle{head}
+
+\headrule
+\header{\textbf{\myclass\ \mylecture\mysection}}%
+{\textbf{\myname\ (\myUCO)}}%
+{\textbf{\myhwtype\ \myhwnum}}
+
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+  {\Large \myclass{} \myhwtype{} \myhwnum} \\
+  \myname{} \myUCO{} \\
+  \today
+\end{center}
+
+
+\begin{numedquestion}
+    For each of the following pairs of functions $f, g$ determine whether $f = o(g),\, g = o(f)$, or $f = \Theta(g)$ then find the first number $n$ such that $f(n) < g(n)$:
+    \vspace{1em}
+
+    a) $f(n) = n^2,\, g(n)=2n^2 + 100\sqrt{n}$\\
+    b) $f(n) = n^{100}, g(n) = 2^{n/100}$\\
+    c) $f(n) = n^{100}, g(n) = 2^{n^{n/100}}$\\
+    d) $f(n)  \sqrt{n}, g(n) = 2^{\sqrt{\text{log}n}}$\\
+    e) $f(n) = n^{100}, g(n) = 2^{(\text{log}n)^2}$\\
+    f) $f(n) = 1000n, g(n) = n\text{log}n$
+    \begin{greybox}
+        a) $f = \Theta(g)$
+        \vspace{1em}
+
+        b) $f = o(g)$
+        \begin{align*}
+            n^{100} &< 2^{n/100}\\
+            100\text{log}n &< n/100\\
+            10000 &< n/\text{log}n\\
+        \end{align*}
+        c) $f = o(g)$\\
+        d) $f = o(g)$\\
+        e) $f = o(g)$\\
+        f) $f = o(g)$
+    \end{greybox}
+
+    \begin{numedquestion}
+      For each of the following recursively defined functions $f$, find a closed expression for a function $g$ such that $f(n) = \Theta(g(n))$, and prove that this is the case.
+      \vspace{1em}
+
+      \textbf{(a)} $f(n) = f(n-1) + 10$\\
+      \textbf{(b)} $f(n) = f(n-1) + n$\\
+      \textbf{(c)} $f(n) = 2f(n-1)$\\
+      \textbf{(d)} $f(n) = f(n/2) + 10$\\
+      \textbf{(e)} $f(n) = f(n/2) + n$\\
+      \textbf{(f)} $f(n) = 2f(n/2) + n$\\
+      \textbf{(g)} $f(n) = 3f(n/2)$\\
+      \textbf{(h)} $f(n) = 2f(n/2) + O(n^2)$
+      \begin{greybox}
+        \textbf{(a)} For each $f(k)$, the total number of steps that needs to be done is $f(k-1) + O(1)$. Since it is a constant amount of work for $n$ values, $f(n) = \Theta(n)$ in this case.
+
+        \textbf{(b)} For each $f(k)$, the total number of steps that needs to be done is $O(n)$. Since it is linear amount of work for $n$ values, $f(n) = \Theta(n^2)$
+
+        \textbf{(c)} Expanded out, this function evaluates to $O(2^n)$, so $f = \Theta(2^n)$.
+
+        \textbf{(d)} Since there is $O(1)$ work being done $\log n$ times, $f = \log n$
+
+        \textbf{(e)} Since there is $O(k)$ work begin done $\log n$ times, where $k$ is the input of $f$, $f = \Theta{n}$ since $k$ is halving at every step
+
+        \textbf{(f)} Since there is $O(n)$ work being done $\log n$ times, $f = \Theta(n\log n)$
+
+        \textbf{(g)} Since $\log_2 3 > 0$, $f = \Theta(n^{log_2 3})$
+        
+        \textbf{(h)} Since $n^2 > 1$, $f = n^2$
+
+      \end{greybox}
+    \end{numedquestion}
+
+    \begin{greybox}
+      \textbf{(0.3)} The reason the machine does not break apart is due to the number of rotations needed from the first gear to move the final gear even a little. The number of turns to rotate the $k$th gear a single time is $50^k$. Therefore the total number of rotations the last gear does in one minute is $50^{13} / 212$ which is too large a number to notice any change in the last gears rotation. 
+    \end{greybox}
+\end{numedquestion}
+
+\begin{numedquestion}
+  Demonstrate that $e$ is an irrational number.
+
+  \begin{proof}
+  For sake of contradiction, assume that $e$ is a rational number, that is, that it can be written as $e=\frac{a}{b}$. Recall that $e$ can be written as follows:
+  $$e = \sum_{n=0}^{\infty}\frac{1}{n!}$$
+  Therefore, since $e = \frac{a}{b}$, we can write it as:
+  $$\frac{a}{b} = \sum_{n=0}^{\infty}\frac{1}{n!}$$
+  Since the summation iterates through all integers, we can split it into two separate summations, writing the ration $a/b$ as:
+  $$\frac{a}{b} = \sum_{n=0}^{b}\frac{1}{n!} + \sum_{n=b+1}^{\infty}\frac{1}{n!}$$
+  Since all of the terms in the first summation are multiples of all future terms in the summation, every single term can be written as a fraction with $b!$ in the denominator, meaning that the first summation can be written as:
+  $$\frac{a}{b} = \frac{k}{b!} + \sum_{n=b+1}^{\infty}\frac{1}{n!}$$
+  For some integer $k$. 
+  \end{proof}
+\end{numedquestion}
+
+
+
+
+
+\end{document}
+
