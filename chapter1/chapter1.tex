@@ -1,0 +1,156 @@
+\documentclass[11pt]{exam}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\newcommand{\myname}{Cael Howard} %Write your name in here
+\newcommand{\myUCO}{} 
+\newcommand{\myhwtype}{}
+\newcommand{\myhwnum}{5} %Homework set number
+\newcommand{\myclass}{Computational Complexity}
+\newcommand{\mylecture}{}
+\newcommand{\mysection}{}
+\usepackage{tcolorbox}
+
+
+% Prefix for numedquestion's
+\newcommand{\questiontype}{Question}
+
+
+% Use this if your "written" questions are all under one section
+% For example, if the homework handout has Section 5: Written Questions
+% and all questions are 5.1, 5.2, 5.3, etc. set this to 5
+% Use for 0 no prefix. Redefine as needed per-question.
+\newcommand{\writtensection}{0}
+
+\usepackage{amsmath, amsfonts, amsthm, amssymb}  % Some math symbols
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{accents}
+
+\usepackage{centernot}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\card}{\vert}{\vert}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+
+\newenvironment{namedquestion}[1][\arabic{questionCounter}]{%
+    \addtocounter{questionCounter}{1}%
+    \setcounter{partCounter}{0}%
+    \vspace{.2in}%
+        \noindent{\bf #1}%
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{numedquestion}[0]{%
+	\stepcounter{questionCounter}%
+    \vspace{.2in}%
+        \ifx\writtensection\undefined
+        \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+        \else
+          \if\writtensection0
+          \noindent{\bf \questiontype \; \arabic{questionCounter}. }%
+          \else
+          \noindent{\bf \questiontype \; \writtensection.\arabic{questionCounter} }%
+        \fi
+    \vspace{0.3em} \hrule \vspace{.1in}%
+}{}
+
+\newenvironment{alphaparts}[0]{%
+  \begin{enumerate}[label=\textbf{(\alph*)}]
+}{\end{enumerate}}
+
+\newenvironment{arabicparts}[0]{%
+  \begin{enumerate}[label=\textbf{\arabic{questionCounter}.\arabic*})]
+}{\end{enumerate}}
+
+\newenvironment{questionpart}[0]{%
+  \item
+}{}
+
+\newcommand{\answerbox}[1]{
+\begin{framed}
+\vspace{#1}
+\end{framed}}
+
+\newtcolorbox{greybox}[1][]{
+  colback=gray!10!white, % Light grey background
+  colframe=black!50,    % Dark grey frame
+  fonttitle=\bfseries,
+  title=#1,
+  sharp corners,
+  rounded corners,
+  leftrule=1pt,
+  rightrule=1pt
+}
+
+\pagestyle{head}
+
+\headrule
+\header{\textbf{\myclass\ \mylecture\mysection}}%
+{\textbf{\myname\ (\myUCO)}}%
+{\textbf{\myhwtype\ \myhwnum}}
+
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+  {\Large \myclass{} \myhwtype{} \myhwnum} \\
+  \myname{} \myUCO{} \\
+  \today
+\end{center}
+
+
+\begin{numedquestion}
+    \textbf{Addition function}
+    To design a turing machine that can compute the process of adding two numbers together, we define the tuple $(\Gamma, Q, \delta)$. The high level definition of this TM will be as follows. Using 5 tapes in total (input, 3 work tapes, and output), and the alphabet $\{0,1,2,3,4,5,6,7,8,9, \triangleright, \square\}$. It operates as follows on input $x,y$:\\
+    1. Copy the numbers x and y from the input tape to their own respective work tapes\\
+    2. Moving right to left accross the digits, add the numeric values under the two work tape heads and write the mod 10 value under the third work tape head. Move each input head left one cell and the third work tape one cell right.\\
+    3. If either of the input work tapes is completely read, we have finished adding all numeric values.\\
+    4. Copy the right to left sum from the third work tape to the output tape.\\
+    To ensure that this TM works for all inputs, we need to adjust to handle certain cases, such as when the inputs are different lengths or when there are carries between cell additions. To ensure everything is correctly accounted for, we must define different states. The more formal definition of this machine is as follows:
+
+    1.\quad On state $q_{\text{start}}$, move the input tape to the right, and write a $\triangleright$ symbol on each of the 3 work tapes while moving their heads one to the right as well. We then change to the state $q_{\text{copy}}$.\\
+    2.\quad On state $q_{\text{copyX}}$\vspace{-1em}
+    \begin{itemize}
+        \setlength{\itemsep}{0pt}  % Reduces space between items
+        \setlength{\parskip}{0pt}
+        \item If the input tape head reaches a blank symbol $\square$ (We assume that the input x and y are separated by a blank symbol), transition to state $q_{copy1}$ and move the input head one to the left.
+        \item Else, move the input tape one to the right.
+    \end{itemize}
+    3.\quad On state $q_{\text{copy1}}$\vspace{-1em}
+    \begin{itemize}
+        \setlength{\itemsep}{0pt}  % Reduces space between items
+        \setlength{\parskip}{0pt}
+        \item If the input tape head reaches a blank symbol $\square$, set state to $q_{\text{copyY}}$
+        \item Else, copy the symbol under the input head to the first work tape and move the input head one left and output head one right.
+    \end{itemize}
+    4.\quad (Repeat above states to copy Y to second work tape and transition to state $q_{\text{add}})$
+\end{numedquestion}
+
+\setcounter{questionCounter}{6}
+\begin{numedquestion}
+    We will demonstrate that for every \textit{two-dimensional} turing machine, which has two infinite tapes in both the vertical and horizontal direction. We show that if $g$ can be computed in time $T(n)$ using a two-dimensional TM then $f \in \text{\textbf{DTIME}}(T(n)^2)$. To see this, we design a new turning machine $M$ that can simulate the computational power of a two dimensional one. To do this, we will assign the horizontal tape of the 2D turing machine to the even cells of $M$'s work tape, being the $0$th, $2$nd, ..., $2k$th cells. Similarly, the vertical tape of the 2D turing machine will be assigned to the odd indices of $M$'s work tape.
+\end{numedquestion}
+
+
+
+
+\end{document}
+
